@@ -7,6 +7,9 @@ import { createTodo, deleteTodo } from "./graphql/mutations";
 import { listTodos } from "./graphql/queries";
 import { onCreateTodo } from "./graphql/subscriptions";
 
+import { GlobalStyles } from "./style/global-styles";
+import { MainTitle, HeaderText } from "./style/typography";
+
 import awsconfig from "./aws-exports";
 import "./App.css";
 
@@ -79,26 +82,42 @@ function App() {
 
   return (
     <div className="App">
-      <button onClick={createNewTodo}>Add Todo</button>
-      <form id="todoSubmitForm">
+      <GlobalStyles />
+      <MainTitle>What do you need to do today?</MainTitle>
+      <form>
         <label>
-          Title:
-          <input type="text" name="name" onChange={handleInputChange} />
+          <HeaderText>Title:</HeaderText>
+          <textarea type="text" name="name" onChange={handleInputChange} />
         </label>
         <label>
-          Description:
-          <input type="text" name="description" onChange={handleInputChange} />
+          <HeaderText>Description:</HeaderText>
+          <textarea
+            type="text"
+            name="description"
+            cols="40"
+            rows="3"
+            onChange={handleInputChange}
+          />
         </label>
-        <input type="button" value="Submit" onClick={submitToDo} />
+        <input
+          type="button"
+          value="Submit"
+          onClick={submitToDo}
+          className="submitToDo"
+        />
       </form>
-      <div>
+      <div className="todoContainer">
         {state.todos.length > 0 ? (
           state.todos.map(todo => (
             <div className="todos">
-              <p key={todo.id}>
-                {todo.name} : {todo.description}
-              </p>
-              <button onClick={() => deleteThisTodo({ todo })}>X</button>
+              <button
+                onClick={() => deleteThisTodo({ todo })}
+                className="closeToDo"
+              >
+                X
+              </button>
+              <h3 key={todo.id}>{todo.name}</h3>
+              <p key={todo.id}>{todo.description}</p>
             </div>
           ))
         ) : (
