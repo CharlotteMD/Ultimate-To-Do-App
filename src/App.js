@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 
 import API, { graphqlOperation } from "@aws-amplify/api";
 import PubSub from "@aws-amplify/pubsub";
@@ -32,11 +32,6 @@ const reducer = (state, action) => {
   }
 };
 
-async function createNewTodo() {
-  const todo = { name: "Use AWS AppSync", description: "RealTime and Offline" };
-  await API.graphql(graphqlOperation(createTodo, { input: todo }));
-}
-
 async function deleteThisTodo({ todo }) {
   delete todo.name;
   delete todo.description;
@@ -45,6 +40,7 @@ async function deleteThisTodo({ todo }) {
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [values, setValues] = useState({ name: "", description: "" });
 
   useEffect(() => {
     async function getData() {
@@ -63,9 +59,49 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  const handleInputChange = e => {
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
+    console.log("Value: ", values);
+  };
+
+  async function createNewTodo(e) {
+    e.preventDefault();
+    await API.graphql(graphqlOperation(createTodo, { input: values }));
+  }
+
+  const submitToDo = e => {
+    const { name, description } = values;
+    if (!name || !description) return;
+    console.log("here");
+    createNewTodo(e);
+    console.log("done");
+  };
+
   return (
     <div className="App">
       <button onClick={createNewTodo}>Add Todo</button>
+      <form>
+        <label>
+          Title:
+          <input
+            type="text"
+            name="name"
+            value={values.name}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label>
+          Description:
+          <input
+            type="text"
+            name="description"
+            value={values.description}
+            onChange={handleInputChange}
+          />
+        </label>
+        <button onClick={submitToDo}>Create</button>
+      </form>
       <div>
         {state.todos.length > 0 ? (
           state.todos.map(todo => (
