@@ -62,7 +62,6 @@ function App() {
   const handleInputChange = e => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
-    console.log("Value: ", values);
   };
 
   async function createNewTodo(e) {
@@ -73,34 +72,22 @@ function App() {
   const submitToDo = e => {
     const { name, description } = values;
     if (!name || !description) return;
-    console.log("here");
     createNewTodo(e);
-    console.log("done");
   };
 
   return (
     <div className="App">
       <button onClick={createNewTodo}>Add Todo</button>
-      <form>
+      <form id="todoSubmitForm">
         <label>
           Title:
-          <input
-            type="text"
-            name="name"
-            value={values.name}
-            onChange={handleInputChange}
-          />
+          <input type="text" name="name" onChange={handleInputChange} />
         </label>
         <label>
           Description:
-          <input
-            type="text"
-            name="description"
-            value={values.description}
-            onChange={handleInputChange}
-          />
+          <input type="text" name="description" onChange={handleInputChange} />
         </label>
-        <button onClick={submitToDo}>Create</button>
+        <input type="button" value="Submit" onClick={submitToDo} />
       </form>
       <div>
         {state.todos.length > 0 ? (
