@@ -32,21 +32,11 @@ const reducer = (state, action) => {
   }
 };
 
-async function deleteThisTodo({ todo }) {
-  delete todo.name;
-  delete todo.description;
-  await API.graphql(graphqlOperation(deleteTodo, { input: todo }));
-}
-
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [values, setValues] = useState({ name: "", description: "" });
 
   useEffect(() => {
-    async function getData() {
-      const todoData = await API.graphql(graphqlOperation(listTodos));
-      dispatch({ type: QUERY, todos: todoData.data.listTodos.items });
-    }
     getData();
 
     const subscription = API.graphql(graphqlOperation(onCreateTodo)).subscribe({
@@ -58,6 +48,11 @@ function App() {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  async function getData() {
+    const todoData = await API.graphql(graphqlOperation(listTodos));
+    dispatch({ type: QUERY, todos: todoData.data.listTodos.items });
+  }
 
   const handleInputChange = e => {
     const { name, value } = e.target;
@@ -74,6 +69,13 @@ function App() {
     if (!name || !description) return;
     createNewTodo(e);
   };
+
+  async function deleteThisTodo({ todo }) {
+    delete todo.name;
+    delete todo.description;
+    await API.graphql(graphqlOperation(deleteTodo, { input: todo }));
+    getData();
+  }
 
   return (
     <div className="App">
