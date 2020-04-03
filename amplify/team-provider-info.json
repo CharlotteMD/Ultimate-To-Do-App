@@ -1,0 +1,14 @@
+{
+    "test": {
+        "awscloudformation": {
+            "AuthRoleName": "ultimate-todo-app-test-20200403085724-authRole",
+            "UnauthRoleArn": "arn:aws:iam::185506124233:role/ultimate-todo-app-test-20200403085724-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::185506124233:role/ultimate-todo-app-test-20200403085724-authRole",
+            "Region": "eu-west-2",
+            "DeploymentBucketName": "ultimate-todo-app-test-20200403085724-deployment",
+            "UnauthRoleName": "ultimate-todo-app-test-20200403085724-unauthRole",
+            "StackName": "ultimate-todo-app-test-20200403085724",
+            "StackId": "arn:aws:cloudformation:eu-west-2:185506124233:stack/ultimate-todo-app-test-20200403085724/c12fcb20-7580-11ea-8dba-021679f87d94"
+        }
+    }
+}
